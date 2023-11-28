@@ -168,27 +168,25 @@ IFS='
   # this loop, expands possible globs
 	for file in $asset_path; do
 		# Error out on the only illegal combination:  compression disabled AND folder provided
-		if [ "$INPUT_GZIP" = "false" ] && [ -d "$file" ]; then
-			>&2 echo "::error::invalid: gzip and files combination (see log for details)"
-			>&2 printf "\nERR: Invalid configuration: 'gzip' cannot be set to 'false' while there are 'folders/' provided.\n"
-			>&2 printf "\tNote: Either set 'gzip: folders', or remove directories from the 'files:' list.\n\n"
-			>&2 printf "Try:\n"
-			>&2 printf "\tuses: %s\n" "$PKG"
-			>&2 printf "\twith:\n"
-			>&2 printf "\t  ...\n"
-			>&2 printf "\t  gzip: folders\n"
-			>&2 printf "\t  files: >\n"
-			>&2 printf "\t    README.md\n"
-			>&2 printf "\t    my-artifacts/\n"
-			exit 1
+		if [ "$INPUT_GZIP" = "false" ]; then
+			if [ -d "$file" ]; then
+				>&2 echo "::error::invalid: gzip and files combination (see log for details)"
+				>&2 printf "\nERR: Invalid configuration: 'gzip' cannot be set to 'false' while there are 'folders/' provided.\n"
+				>&2 printf "\tNote: Either set 'gzip: folders', or remove directories from the 'files:' list.\n\n"
+				>&2 printf "Try:\n"
+				>&2 printf "\tuses: %s\n" "$PKG"
+				>&2 printf "\twith:\n"
+				>&2 printf "\t  ...\n"
+				>&2 printf "\t  gzip: folders\n"
+				>&2 printf "\t  files: >\n"
+				>&2 printf "\t    README.md\n"
+				>&2 printf "\t    my-artifacts/\n"
+				exit 1
+			else
+				cp "$file" "$assets/$asset_name"
+				continue
+			fi
 		fi
-
-		# Just copy files, if compression not enabled for all
-		if [ "$INPUT_GZIP" != "true" ] && [ -f "$file" ]; then
-			cp "$file" "$assets/$asset_name"
-			continue
-		fi
-
 		# In any other case compress
 		tar -czf "$assets/$asset_name.tgz"  "$file"
 	done
