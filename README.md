@@ -1,4 +1,23 @@
-# meeDamian/github-release
+# FORK NOTES
+Hey, Ivan here.
+I've forked the below repo. I did this because it lacks the maintaince required for it to be functional.
+There are lots of Issues posted, some of which I've made attempts to fix and replied to those running into the same problems.
+
+In part, the problem is related to the script running via `/bin/sh` and not `/bin/bash`.
+This severly limits what features are available and how things get interpretted.
+
+I created a new release where I've implemented many changes, including changes from other forks that are available.
+Things like:
+- fixed how strings get interpretted through the Files parameter
+- using the latest GitHub Actions functions and environment variables
+
+I've gotten the Action to a place where it's usable for my purposes, but there is lots fo be improved upon.
+
+Take care,
+
+`Ivan`
+
+## meeDamian/github-release
 
 [![branches_gh_action_svg]][branches_gh_action_url]
 [![gh_last_release_svg]][gh_last_release_url]
